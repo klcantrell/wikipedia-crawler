@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa:700');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Comfortaa, serif;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.wiki-crawler {
+  position: relative;
+  top: 25%;
+  margin: auto;
+  width: 600px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.wiki-crawler__search-controls {
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__search-controls--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.wiki-crawler__btns {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.wiki-crawler__enter-btn {
+  position: absolute;
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__enter-btn--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.wiki-crawler__search-btns {
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__search-btns--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.wiki-crawler__btns button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.wiki-crawler__results button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
