@@ -62,8 +62,47 @@ body {
   outline: none;
 }
 
+.wiki-crawler__results {
+  position: absolute;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.wiki-crawler__search-in-progress-icon {
+  position: absolute;
+  visibility: hidden;
+}
+
+.wiki-crawler__search-in-progress-icon--spin-and-fade-out {
+  animation-name: spin-fade-out;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+
 .wiki-crawler__results button {
   background: transparent;
   border: none;
   outline: none;
+}
+
+@keyframes spin-fade-out {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  99% {
+    transform: rotate(360deg);
+    opacity: 0;
+    visibility: visible;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    visibility: hidden;
+  }
 }
