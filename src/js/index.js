@@ -1,216 +1,129 @@
-var searchContainer = document.getElementById("searchContainer");
-var searchIcon = document.getElementById("searchIcon");
-var searchBar = document.getElementById("searchBar");
-var searchButtons = document.getElementById("searchButtons");
-var searchExit = document.getElementById("searchExit");
-var searchEnter = document.getElementById("searchEnter");
-var randomIcon = document.getElementById("randomIcon");
-var resultsContainer = document.getElementById("resultsContainer");
-var resultsExit = document.getElementById("resultsExit");
-var error = document.getElementById("error");
-var searchTitles = {};
-var searchItemIds = {};
-
-randomIcon.addEventListener("click", randomPage);
-searchIcon.addEventListener("click", hideSearchIcon);
-searchIcon.addEventListener("click", revealSearchButtons);
-searchExit.addEventListener("click", revealSearchIcon);
-searchExit.addEventListener("click", hideSearchButtons);
-searchBar.addEventListener("keydown", searchMaker);
-searchEnter.addEventListener("click", searchMaker);
-resultsExit.addEventListener("click", resetSearch);
-
-function randomPage() {
-  window.open("https://en.wikipedia.org/wiki/Special:Random");
-}
-
-function hideSearchIcon() {
-  searchIcon.style.opacity = "0";
-  searchIcon.style.display = "none";
-  searchBar.style.display = "block";
-  searchBar.focus();
-  setTimeout(function() {
-    searchBar.style.opacity = "1";}, 1);
-}
-
-function revealSearchIcon() {
-  searchBar.style.opacity = "0";
-  setTimeout(function() {
-    searchBar.style.display = "none";
-    searchIcon.style.display = "block";
-    setTimeout(function() {
-      searchIcon.style.opacity = "1";
-    }, 20);
-  }, 700);
-}
-
-function revealSearchButtons() {
-    searchButtons.style.display = "block";
-    setTimeout(function() {
-      searchButtons.style.opacity = "1";}, 50);
-}
-
-function hideSearchButtons() {
-    searchButtons.style.opacity = "0";
-    setTimeout(function() {
-      searchButtons.style.display = "none";}, 700);
-}
-
-function revealResultsExit() {
-    resultsExit.style.display = "block";
-    setTimeout(function() {
-      resultsExit.style.opacity = "1";}, 700);
-}
-
-function hideResultsExit() {
-    resultsExit.style.opacity = "0";
-    setTimeout(function() {
-      resultsExit.style.display = "none";}, 700);
-}
-
-function searchMaker(e) {
-   if (e.code === "Enter") {
-     wikiRequest(querifySearch(searchBar.value));
-     hideSearch(e);
-     resultsContainer.style.opacity = "1";
-   } else if (e.button === 0) {
-     wikiRequest(querifySearch(searchBar.value));
-     hideSearch(e);
-     resultsContainer.style.opacity = "1";
-   }
-}
-
-function hideSearch(e) {
-  searchContainer.style.opacity = "0";
-  hideSearchButtons();
-  setTimeout(function() {
-    searchContainer.style.visibility = "hidden";}, 300);
-    if (e.target.id === "searchEnter" || e.target.id === "searchBar") {
-      randomIcon.style.opacity = "0";
-      setTimeout(function() {
-        randomIcon.style.visibility = "hidden";}, 800);
-  }
-}
-
-function revealRandomIcon() {
-  randomIcon.style.visibility = "initial";
-  setTimeout(function() {
-    randomIcon.style.opacity = "1";}, 20);
-}
-
-function hideError() {
-  error.style.opacity = "0";
-  setTimeout(function(){
-    error.style.visibility = "hidden";}, 1000);
-}
-
-function revealError() {
-  error.style.visibility = "initial";
-  setTimeout(function(){
-    error.style.opacity = "1";}, 10);
-}
-
-function resetResults() {
-  searchBar.value = "";
-  resultsContainer.style.opacity = "0";
-  resultsExit.style.opacity = "0";
-  setTimeout(function() {
-    for (var i = 1; i < 11; i++) {
-      var child = document.getElementById("item" + i);
-      if (resultsContainer.contains(child)) {
-        resultsContainer.removeChild(child);
-      }
+function View() {
+  const dom = {
+    rootEl: document.getElementById('wiki-crawler'),
+    cache() {
+      this.enterBtn = this.rootEl.querySelector('.js_wiki-crawler__enter-btn');
+      this.searchBtns = this.rootEl.querySelector('.js_wiki-crawler__search-btns');
+      this.exitBtn = this.rootEl.querySelector('.js_wiki-crawler__exit-btn');
+      this.goBtn = this.rootEl.querySelector('.js_wiki-crawler__go-btn');
+      this.searchControls = this.rootEl.querySelector('.js_wiki-crawler__search-controls');
+      this.searchBar = this.rootEl.querySelector('.js_wiki-crawler__search-bar');
+      this.resultsSection = this.rootEl.querySelector('.js_wiki-crawler__results');
+      this.resultsItems = this.rootEl.querySelector('.js_wiki-crawler__results-items');
+      this.progressIcon = this.rootEl.querySelector('.js_wiki-crawler__search-in-progress-icon');
     }
-  }, 500);
-}
+  };
 
-function querifySearch(search) {
-  var querified = search.split(" ");
-  querified = querified.join("+");
-  return querified;
-}
+  function whenEnterBtnClicked() {
+    dom.enterBtn.classList.add('wiki-crawler__enter-btn--hidden');
+    dom.searchBtns.classList.remove('wiki-crawler__search-btns--hidden');
+    dom.searchBar.classList.remove('wiki-crawler__search-bar--hidden');
+  }
 
-function wikiRequest(searchQuerified) {
-  var request = document.createElement('script');
-  request.setAttribute("src", "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=&list=search&callback=createSearchItems&srsearch=" + searchQuerified);
-  document.head.appendChild(request);
-}
+  function whenExitBtnClicked() {
+    dom.enterBtn.classList.remove('wiki-crawler__enter-btn--hidden');
+    dom.searchBtns.classList.add('wiki-crawler__search-btns--hidden');
+    dom.searchBar.classList.add('wiki-crawler__search-bar--hidden');
+  }
 
-function createSearchItems(e) {
-  if (e.hasOwnProperty("error")) {
-    throwError();
-  } else if (e.query.search.length === 0) {
-    throwError();
-  } else {
-    var i = 0;
-    itemCreationLoop(e, i);
+  function whenGoBtnClicked() {
+    let userInput = dom.searchBar.value;
+    dom.searchBar.value = '';
+    dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
+    renderProgressIcon()
+      .then(() => {
+        controller.executeSearch(userInput);
+      });
+  }
+
+  function renderSearchResults(searchResults) {
+    searchResults.forEach((searchResult) => {
+      const resultEl = document.createElement('ARTICLE');
+      const resultContent = html`
+        <h1>${searchResult.title}</h1>
+      `;
+      resultEl.innerHTML = resultContent;
+      dom.resultsItems.appendChild(resultEl);
+    })
+  }
+
+  function renderProgressIcon() {
+    return new Promise((resolve) => {
+      dom.progressIcon.classList.add('wiki-crawler__search-in-progress-icon--spin-and-fade-out')
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    })
+  }
+
+  function bindEvents() {
+    dom.enterBtn.addEventListener('click', whenEnterBtnClicked);
+    dom.exitBtn.addEventListener('click', whenExitBtnClicked);
+    dom.goBtn.addEventListener('click', whenGoBtnClicked);
+  }
+
+  return {
+    init() {
+      dom.cache();
+      bindEvents();
+    },
+    renderSearchResults
   }
 }
 
-function itemCreationLoop(e, i) {
-  setTimeout(function() {
-    searchTitles["search" + (i + 1)] = e.query.search[i].title;
-    searchItemIds["search" + (i + 1)] = "item" + (i + 1);
-    var resultsElement = document.createElement('P');
-    resultsElement.className = "resultsElements";
-    resultsElement.id = searchItemIds["search" + (i + 1)];
-    resultsElement.innerHTML = searchTitles["search" + (i + 1)];
-    resultsContainer.insertBefore(resultsElement, resultsExit);
-    setTimeout(function() {
-      document.getElementById("item" + (i + 1)).style.opacity = "1";
-      i++;
-      if (i < e.query.search.length) {
-        itemCreationLoop(e, i);
-      }
-    }, 50);
-  }, 300);
-  if (i === e.query.search.length - 1) {
-    revealResultsExit(); 
-    makeEventListeners(e);
+function Controller() {
+  const deps = {};
+
+  function formatUserSearch(input) {
+    return input.split(" ").join("+");
   }
-}
 
-function resetSearch() {
-  searchContainer.style.visibility = "initial";
-  setTimeout(function() {
-    setTimeout(function(){
-      searchContainer.style.opacity = "1";
-      revealSearchIcon();
-      revealRandomIcon();
-    }, 700);
-    resetResults();
-    hideError();}, 10);
-}
-
-function throwError() {
-  revealError();
-  revealResultsExit();
-}
-
-function makeEventListeners(e) {
-  setTimeout(function() {
-    for (var x = 1; x < e.query.search.length + 1; x++) {
-      var id = document.getElementById("item" + x);
-      id.addEventListener("click", makeLink);
-      id.addEventListener("mousedown", changeBackground);
-      id.addEventListener("mouseup", returnBackground);
-      id.addEventListener("mouseover", changeBackground);
-      id.addEventListener("mouseout", returnBackground);
+  return {
+    init(model, view) {
+      deps.model = model;
+      deps.view = view;
+      deps.view.init();
+    },
+    executeSearch(userInput) {
+      let query = formatUserSearch(userInput);
+      deps.model.makeWikipediaRequest(query)
+        .then((results) => {
+          deps.view.renderSearchResults(results);
+        });
     }
-  }, 301);
+  }
 }
 
-function makeLink(e) {
-  var linkTitle = e.target.innerHTML;
-  linkTitle = linkTitle.split(" ");
-  linkTitle = linkTitle.join("_");
-  window.open("https://en.wikipedia.org/wiki/" + linkTitle);
+function Model() {
+  return {
+    makeWikipediaRequest(userQuery) {
+      const url = `https://7k1zglj62f.execute-api.us-east-2.amazonaws.com/v0/wikipedia-crawl/${userQuery}`;
+      let data;
+      return axios.get(url)
+        .then((res) => {
+          return res.data.query.search;
+        });
+    }
+  }
 }
 
-function changeBackground(e) {
-  e.target.style.background = "grey";
-}
+const controller = Controller(),
+      view = View(controller),
+      model = Model();
 
-function returnBackground(e) {
-  e.target.style.background = "white";
+controller.init(model, view);
+
+// UTILITIES
+function html(literals, ...customs) {
+  let result = '';
+  customs.forEach((custom, i) => {
+    let lit = literals[i];
+    if (Array.isArray(custom)) {
+      custom = custom.join('');
+    }
+    result += lit;
+    result += custom;
+  });
+  result += literals[literals.length - 1];
+  return result;
 }
