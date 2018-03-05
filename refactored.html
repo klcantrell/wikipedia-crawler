@@ -14,7 +14,7 @@
   <main class="wiki-crawler" id="wiki-crawler">
     <section class="wiki-crawler__search-controls js_wiki-crawler__search-controls">
       <p class="wiki-crawler__tip">Crawl the Wikipedia</p>
-      <input class="wiki-crawler__search-bar js_wiki-crawler__search-bar" type="text">
+      <input class="wiki-crawler__search-bar wiki-crawler__search-bar--hidden js_wiki-crawler__search-bar" type="text">
       <div class="wiki-crawler__btns">
         <button class="wiki-crawler__enter-btn js_wiki-crawler__enter-btn">
           <svg height="48" width="48" viewBox="0 0 24 24">
@@ -51,20 +51,20 @@
       </div>
     </section>
     <section class="wiki-crawler__results js_wiki-crawler__results">
-      <svg class="wiki-crawler__search-in-progress-icon js_wiki-crawler__search-in-progress-icon" height="48" width="48" viewBox="0 0 24 24">
-          <path fill="blue"
-            d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
-          <path fill="none"
-            d="M0 0h24v24H0z"/>
-      </svg>
       <div class="wiki-crawler__results-items js_wiki-crawler__results-items">
-
       </div>
       <p class="wiki-crawler__no-results-msg"></p>
       <button class="wiki-crawler__exit-btn"></button>
     </section>
+    <svg class="wiki-crawler__search-in-progress-icon js_wiki-crawler__search-in-progress-icon" height="48" width="48" viewBox="0 0 24 24">
+      <path fill="blue"
+        d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
+      <path fill="none"
+        d="M0 0h24v24H0z"/>
+    </svg>
   </main>
 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="src/js/refactored.js"></script>
 
 </body>

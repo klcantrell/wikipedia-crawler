@@ -17,29 +17,43 @@ function View() {
   function whenEnterBtnClicked() {
     dom.enterBtn.classList.add('wiki-crawler__enter-btn--hidden');
     dom.searchBtns.classList.remove('wiki-crawler__search-btns--hidden');
+    dom.searchBar.classList.remove('wiki-crawler__search-bar--hidden');
   }
 
   function whenExitBtnClicked() {
     dom.enterBtn.classList.remove('wiki-crawler__enter-btn--hidden');
     dom.searchBtns.classList.add('wiki-crawler__search-btns--hidden');
+    dom.searchBar.classList.add('wiki-crawler__search-bar--hidden');
   }
 
   function whenGoBtnClicked() {
-    dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
-    dom.progressIcon.classList.add('wiki-crawler__search-in-progress-icon--spin-and-fade-out')
-    controller.executeSearch(dom.searchBar.value);
+    let userInput = dom.searchBar.value;
     dom.searchBar.value = '';
+    dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
+    renderProgressIcon()
+      .then(() => {
+        controller.executeSearch(userInput);
+      });
   }
 
-  function renderSearchResults(data) {
-    let resultsContent = html`
-       <p>${data}</p>
-    `;
-    dom.resultsItems.innerHTML = resultsContent;
+  function renderSearchResults(searchResults) {
+    searchResults.forEach((searchResult) => {
+      const resultEl = document.createElement('ARTICLE');
+      const resultContent = html`
+        <h1>${searchResult.title}</h1>
+      `;
+      resultEl.innerHTML = resultContent;
+      dom.resultsItems.appendChild(resultEl);
+    })
   }
 
   function renderProgressIcon() {
-
+    return new Promise((resolve) => {
+      dom.progressIcon.classList.add('wiki-crawler__search-in-progress-icon--spin-and-fade-out')
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    })
   }
 
   function bindEvents() {
@@ -72,16 +86,23 @@ function Controller() {
     },
     executeSearch(userInput) {
       let query = formatUserSearch(userInput);
-      let data = deps.model.makeWikipediaRequest(query);
-      deps.view.renderSearchResults(data);
+      deps.model.makeWikipediaRequest(query)
+        .then((results) => {
+          deps.view.renderSearchResults(results);
+        });
     }
   }
 }
 
 function Model() {
   return {
-    makeWikipediaRequest() {
-      return 'DATA';
+    makeWikipediaRequest(userQuery) {
+      const url = `https://7k1zglj62f.execute-api.us-east-2.amazonaws.com/v0/wikipedia-crawl/${userQuery}`;
+      let data;
+      return axios.get(url)
+        .then((res) => {
+          return res.data.query.search;
+        });
     }
   }
 }

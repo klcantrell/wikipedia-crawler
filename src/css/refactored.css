@@ -12,22 +12,39 @@ body {
 }
 
 .wiki-crawler {
-  position: relative;
-  top: 25%;
   margin: auto;
   width: 600px;
+  height: 100%;
   display: flex;
-  flex-flow: column;
+  flex-flow: row;
+  justify-content: center;
   align-items: center;
 }
 
 .wiki-crawler__search-controls {
+  margin-top: 25%;
+  margin-bottom: auto;
   transition: opacity 1s, visibility 1s;
 }
 
 .wiki-crawler__search-controls--hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.wiki-crawler__search-bar {
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__search-bar--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.wiki-crawler button {
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 .wiki-crawler__btns {
@@ -39,6 +56,7 @@ body {
 
 .wiki-crawler__enter-btn {
   position: absolute;
+  transform: translateY(-30%);
   transition: opacity 1s, visibility 1s;
 }
 
@@ -56,21 +74,21 @@ body {
   visibility: hidden;
 }
 
-.wiki-crawler__btns button {
-  background: transparent;
-  border: none;
-  outline: none;
-}
-
 .wiki-crawler__results {
   position: absolute;
   display: flex;
   flex-flow: column;
   align-items: center;
+  justify-content: center;
+}
+
+.wiki-crawler__results-items {
+  text-align: center;
 }
 
 .wiki-crawler__search-in-progress-icon {
   position: absolute;
+  top: 30%;
   visibility: hidden;
 }
 
@@ -79,12 +97,6 @@ body {
   animation-duration: 2s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
-}
-
-.wiki-crawler__results button {
-  background: transparent;
-  border: none;
-  outline: none;
 }
 
 @keyframes spin-fade-out {
