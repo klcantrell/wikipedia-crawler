@@ -20,7 +20,7 @@ body {
 .wiki-crawler {
   position: relative;
   margin: auto;
-  width: 600px;
+  width: 800px;
   height: 100%;
   display: flex;
   flex-flow: row;
@@ -100,24 +100,31 @@ body {
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
+  justify-content: flex-start;
+  height: 600px;
   width: 100%;
 }
 
 .wiki-crawler__results-items {
-  text-align: center;
-  margin-bottom: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
   margin-top: 30px;
-  width: 80%;
+  width: 100%;
 }
 
 .wiki-crawler__result {
+  flex: 0 0 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
   border: 3px solid #9DA5A9;
   border-radius: 20px;
-  margin: 10px;
+  text-align: center;
   font-size: 0.5rem;
-  line-height: 1rem;
+  height: 100px;
+  min-width: 240px;
   transition: opacity 3s ease-out, visibility 3s ease-out;
 }
 
@@ -169,5 +176,22 @@ body {
     transform: rotate(360deg);
     opacity: 0;
     visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  :root {
+    font-size: 24px;
+  }
+
+  .wiki-crawler {
+    width: 100%;
+    min-width: 375px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wiki-crawler__results {
+    height: 100%;
   }
 }
