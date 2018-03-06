@@ -37,14 +37,36 @@ function View() {
   }
 
   function renderSearchResults(searchResults) {
-    searchResults.forEach((searchResult) => {
-      const resultEl = document.createElement('ARTICLE');
+    let promiseChain = Promise.resolve();
+    for (let searchResult of searchResults) {
+      promiseChain = promiseChain.then(() => {
+        return createSearchResultElement(searchResult)
+          .then((element) => {
+            fadeInSearchResultElement(element);
+          });
+      });
+    }
+  }
+
+  function createSearchResultElement(searchResultData) {
+    return new Promise((resolve) => {
+      const resultElShell = document.createElement('DIV');
       const resultContent = html`
-        <h1>${searchResult.title}</h1>
+        <article class="wiki-crawler__result wiki-crawler__result--hidden">
+          <h1>${searchResultData.title}</h1>
+        </article>
       `;
-      resultEl.innerHTML = resultContent;
+      resultElShell.innerHTML = resultContent;
+      const resultEl = resultElShell.firstElementChild;
       dom.resultsItems.appendChild(resultEl);
-    })
+      setTimeout(() => {
+        resolve(resultEl);
+      }, 100)
+    });
+  }
+
+  function fadeInSearchResultElement(el) {
+    el.classList.remove('wiki-crawler__result--hidden');
   }
 
   function renderProgressIcon() {

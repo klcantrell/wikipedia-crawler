@@ -12,6 +12,7 @@ body {
 }
 
 .wiki-crawler {
+  position: relative;
   margin: auto;
   width: 600px;
   height: 100%;
@@ -80,15 +81,33 @@ body {
   flex-flow: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
 }
 
 .wiki-crawler__results-items {
   text-align: center;
+  margin-bottom: auto;
+  margin-top: 30px;
+  width: 80%;
+}
+
+.wiki-crawler__result {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 10px;
+  transition: opacity 3s ease-out, visibility 3s ease-out;
+}
+
+.wiki-crawler__result--hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .wiki-crawler__search-in-progress-icon {
   position: absolute;
-  top: 30%;
+  top: 25%;
   visibility: hidden;
 }
 
