@@ -75,19 +75,28 @@ function View() {
 
   function createSearchResultElement(searchResultData) {
     return new Promise((resolve) => {
-      const resultElShell = document.createElement('DIV');
-      const resultContent = html`
-        <article class="wiki-crawler__result wiki-crawler__result--hidden">
-          <h1>${searchResultData.title}</h1>
-        </article>
-      `;
-      resultElShell.innerHTML = resultContent;
+      const itemData = controller.formatSearchResultData(searchResultData),
+            content = resultContent(itemData),
+            resultElShell = document.createElement('DIV');
+      resultElShell.innerHTML = content;
       const resultEl = resultElShell.firstElementChild;
       dom.resultsItems.appendChild(resultEl);
       setTimeout(() => {
         resolve(resultEl);
       }, 100)
     });
+  }
+
+  function resultContent(searchResultData) {
+    console.log(searchResultData)
+    return html`
+      <a href=${searchResultData.link}
+         target="_blank"
+         rel="noopener"
+         class="wiki-crawler__result wiki-crawler__result--hidden">
+        <h1>${searchResultData.title}</h1>
+      </a>
+    `;
   }
 
   function fadeInSearchResultElement(el) {
@@ -156,6 +165,15 @@ function Controller() {
     return input.split(" ").join("+");
   }
 
+  function formatSnippet(searchResultData) {
+    return 'sup';
+  }
+
+  function formatLink(searchResultData) {
+    const linkTag = searchResultData.title.split(' ').join('_');
+    return `https://en.wikipedia.org/wiki/${linkTag}`;
+  }
+
   return {
     init(model, view) {
       deps.model = model;
@@ -173,6 +191,13 @@ function Controller() {
             resolve();
           });
       });
+    },
+    formatSearchResultData(searchResultData) {
+      return {
+        title: searchResultData.title,
+        snippet: formatSnippet(searchResultData),
+        link: formatLink(searchResultData)
+      }
     }
   }
 }
