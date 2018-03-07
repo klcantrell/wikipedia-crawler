@@ -41,11 +41,12 @@ function View() {
   }
 
   function whenReturnBtnClicked() {
-    this.destroySearchResults();
+    destroySearchResults();
     dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
   }
 
   function renderSearchResults(searchResults) {
+    dom.resultsSection.classList.remove('wiki-crawler__results--hidden');
     return new Promise((resolve) => {
       let promiseChain = Promise.resolve();
       for (let searchResult of searchResults) {
@@ -93,13 +94,38 @@ function View() {
   }
 
   function destroySearchResults() {
+    fadeOutSearchResults()
+      .then(() => {
+        return removeSearchEls();
+      })
+      .then(() => {
+        dom.searchControls.classList.remove('wiki-crawler__search-controls--hidden');
+      })
+  }
 
+  function fadeOutSearchResults() {
+    return new Promise((resolve) => {
+      dom.resultsSection.classList.add('wiki-crawler__results--hidden');
+      dom.returnBtn.classList.remove('wiki-crawler__return-btn--hidden');
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    })
+  }
+
+  function removeSearchEls() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1)
+    });
   }
 
   function bindEvents() {
     dom.enterBtn.addEventListener('click', whenEnterBtnClicked);
     dom.exitBtn.addEventListener('click', whenExitBtnClicked);
     dom.goBtn.addEventListener('click', whenGoBtnClicked);
+    dom.returnBtn.addEventListener('click', whenReturnBtnClicked);
   }
 
   return {

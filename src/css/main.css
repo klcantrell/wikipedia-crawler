@@ -114,6 +114,12 @@ body {
   justify-content: flex-start;
   height: 600px;
   width: 100%;
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__results--hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .wiki-crawler__results-items {
