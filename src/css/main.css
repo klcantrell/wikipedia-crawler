@@ -172,6 +172,16 @@ body {
   animation-iteration-count: 1;
 }
 
+.wiki-crawler__return-btn {
+  margin-top: auto;
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__return-btn--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 @keyframes spin-fade-out {
   0% {
     transform: rotate(0deg);

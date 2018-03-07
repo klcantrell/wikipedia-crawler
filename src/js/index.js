@@ -11,6 +11,7 @@ function View() {
       this.resultsSection = this.rootEl.querySelector('.js_wiki-crawler__results');
       this.resultsItems = this.rootEl.querySelector('.js_wiki-crawler__results-items');
       this.progressIcon = this.rootEl.querySelector('.js_wiki-crawler__search-in-progress-icon');
+      this.returnBtn = this.rootEl.querySelector('.js_wiki-crawler__return-btn');
     }
   };
 
@@ -32,20 +33,33 @@ function View() {
     dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
     renderProgressIcon()
       .then(() => {
-        controller.executeSearch(userInput);
+        return controller.executeSearch(userInput);
+      })
+      .then(() => {
+        dom.returnBtn.classList.remove('wiki-crawler__return-btn--hidden');
       });
   }
 
+  function whenReturnBtnClicked() {
+    this.destroySearchResults();
+    dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
+  }
+
   function renderSearchResults(searchResults) {
-    let promiseChain = Promise.resolve();
-    for (let searchResult of searchResults) {
+    return new Promise((resolve) => {
+      let promiseChain = Promise.resolve();
+      for (let searchResult of searchResults) {
+        promiseChain = promiseChain.then(() => {
+          return createSearchResultElement(searchResult)
+            .then((element) => {
+              fadeInSearchResultElement(element);
+            });
+        });
+      }
       promiseChain = promiseChain.then(() => {
-        return createSearchResultElement(searchResult)
-          .then((element) => {
-            fadeInSearchResultElement(element);
-          });
+        return resolve();
       });
-    }
+    })
   }
 
   function createSearchResultElement(searchResultData) {
@@ -78,6 +92,10 @@ function View() {
     })
   }
 
+  function destroySearchResults() {
+
+  }
+
   function bindEvents() {
     dom.enterBtn.addEventListener('click', whenEnterBtnClicked);
     dom.exitBtn.addEventListener('click', whenExitBtnClicked);
@@ -107,11 +125,16 @@ function Controller() {
       deps.view.init();
     },
     executeSearch(userInput) {
-      let query = formatUserSearch(userInput);
-      deps.model.makeWikipediaRequest(query)
-        .then((results) => {
-          deps.view.renderSearchResults(results);
-        });
+      return new Promise((resolve) => {
+        let query = formatUserSearch(userInput);
+        deps.model.makeWikipediaRequest(query)
+          .then((results) => {
+            return deps.view.renderSearchResults(results);
+          })
+          .then(() => {
+            resolve();
+          });
+      });
     }
   }
 }
