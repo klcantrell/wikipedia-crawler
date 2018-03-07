@@ -62,10 +62,19 @@ body {
   visibility: hidden;
 }
 
-.wiki-crawler button {
+.wiki-crawler__btn {
   background: transparent;
   border: none;
   outline: none;
+  cursor: pointer;
+}
+
+.wiki-crawler__btn:hover [coloredPath] {
+  fill: #F7F6F2;
+}
+
+.wiki-crawler__btn:active [coloredPath] {
+  fill: #F7F6F2;
 }
 
 .wiki-crawler__btns {
@@ -84,6 +93,8 @@ body {
 .wiki-crawler__enter-btn--hidden {
   opacity: 0;
   visibility: hidden;
+  transform: scale(4);
+  transition: opacity 1s, visibility 1s, transform 1s;
 }
 
 .wiki-crawler__search-btns {
@@ -111,6 +122,7 @@ body {
   justify-content: space-around;
   margin-top: 30px;
   width: 100%;
+  cursor: pointer;
 }
 
 .wiki-crawler__result {
@@ -125,6 +137,7 @@ body {
   font-size: 0.5rem;
   height: 100px;
   min-width: 240px;
+  user-select: none;
   transition: opacity 3s ease-out, visibility 3s ease-out;
 }
 
