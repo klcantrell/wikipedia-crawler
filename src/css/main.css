@@ -128,7 +128,6 @@ body {
   justify-content: space-around;
   margin-top: 30px;
   width: 100%;
-  cursor: pointer;
 }
 
 .wiki-crawler__result {
@@ -144,6 +143,7 @@ body {
   height: 100px;
   min-width: 240px;
   user-select: none;
+  cursor: pointer;
   transition: opacity 3s ease-out, visibility 3s ease-out;
 }
 
@@ -215,12 +215,21 @@ body {
 
   .wiki-crawler {
     width: 100%;
-    min-width: 375px;
+    min-width: 350px;
+  }
+
+  .wiki-crawler__results {
+    height: 650px;
+    align-self: flex-start;
   }
 }
 
 @media screen and (max-width: 480px) {
+  :root, body {
+    overflow-x: hidden;
+  }
+
   .wiki-crawler__results {
-    height: 100%;
+    height: 1200px;
   }
 }

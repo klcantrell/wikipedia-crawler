@@ -96,7 +96,7 @@ function View() {
   function destroySearchResults() {
     fadeOutSearchResults()
       .then(() => {
-        return removeSearchEls();
+        return removeResultEls();
       })
       .then(() => {
         dom.searchControls.classList.remove('wiki-crawler__search-controls--hidden');
@@ -113,7 +113,7 @@ function View() {
     })
   }
 
-  function removeSearchEls() {
+  function removeResultEls() {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
