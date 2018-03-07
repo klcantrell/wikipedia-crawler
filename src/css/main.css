@@ -208,7 +208,7 @@ body {
   }
 }
 
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 800px) {
   :root {
     font-size: 24px;
   }
@@ -219,8 +219,14 @@ body {
   }
 
   .wiki-crawler__results {
-    height: 650px;
+    height: auto;
     align-self: flex-start;
+  }
+
+  .wiki-crawler__return-btn {
+    margin: 0;
+    position: relative;
+    top: -20px;
   }
 }
 
@@ -228,8 +234,7 @@ body {
   :root, body {
     overflow-x: hidden;
   }
-
-  .wiki-crawler__results {
-    height: 1200px;
+  .wiki-crawler__return-btn {
+    top: -50px;
   }
 }

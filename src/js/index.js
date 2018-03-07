@@ -115,9 +115,10 @@ function View() {
 
   function removeResultEls() {
     return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 1)
+      while (dom.resultsItems.firstChild) {
+        dom.resultsItems.removeChild(dom.resultsItems.firstChild);
+      }
+      resolve();
     });
   }
 
