@@ -28,6 +28,21 @@ function View() {
   }
 
   function whenGoBtnClicked() {
+    whenUserInitiatesSearch()
+  }
+
+  function whenReturnKeyPressedOnInput(e) {
+    if (e.which === 13) {
+      whenUserInitiatesSearch();
+    }
+  }
+
+  function whenReturnBtnClicked() {
+    destroySearchResults();
+    dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
+  }
+
+  function whenUserInitiatesSearch() {
     let userInput = dom.searchBar.value;
     dom.searchBar.value = '';
     dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
@@ -38,11 +53,6 @@ function View() {
       .then(() => {
         dom.returnBtn.classList.remove('wiki-crawler__return-btn--hidden');
       });
-  }
-
-  function whenReturnBtnClicked() {
-    destroySearchResults();
-    dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
   }
 
   function renderSearchResults(searchResults) {
@@ -127,6 +137,7 @@ function View() {
     dom.exitBtn.addEventListener('click', whenExitBtnClicked);
     dom.goBtn.addEventListener('click', whenGoBtnClicked);
     dom.returnBtn.addEventListener('click', whenReturnBtnClicked);
+    dom.searchBar.addEventListener('keyup', whenReturnKeyPressedOnInput);
   }
 
   return {
