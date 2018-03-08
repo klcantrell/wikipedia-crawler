@@ -173,7 +173,9 @@ function Controller() {
         return item ? !item.match(/^\s$/) : false;
       })
       .join('')
-      .substr(0, 50)
+      .split(' ')
+      .slice(0, 12)
+      .join(' ')
       .concat('...');
   }
 
