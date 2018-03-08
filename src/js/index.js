@@ -93,7 +93,8 @@ function View() {
          target="_blank"
          rel="noopener"
          class="wiki-crawler__result wiki-crawler__result--hidden">
-        <h1>${searchResultData.title}</h1>
+        <h1 class="wiki-crawler__result-title">${searchResultData.title}</h1>
+        <p class="wiki-crawler__result-snippet">${searchResultData.snippet}</p>
       </a>
     `;
   }
@@ -166,13 +167,14 @@ function Controller() {
 
   function formatSnippet(searchResultData) {
     let spanTagsRegExp = /<\/*[^>]*>/;
-    return searchResultData.snippet.split(spanTagsRegExp)
-        .filter((item) => {
-          return item ? !item.match(/^\s$/) : false;
-        })
-        .join('')
-        .substr(0, 50)
-        .concat('...');
+    return searchResultData.snippet
+      .split(spanTagsRegExp)
+      .filter((item) => {
+        return item ? !item.match(/^\s$/) : false;
+      })
+      .join('')
+      .substr(0, 50)
+      .concat('...');
   }
 
   function formatLink(searchResultData) {
