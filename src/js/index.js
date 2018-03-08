@@ -88,7 +88,6 @@ function View() {
   }
 
   function resultContent(searchResultData) {
-    console.log(searchResultData)
     return html`
       <a href=${searchResultData.link}
          target="_blank"
@@ -166,7 +165,14 @@ function Controller() {
   }
 
   function formatSnippet(searchResultData) {
-    return 'sup';
+    let spanTagsRegExp = /<\/*[^>]*>/;
+    return searchResultData.snippet.split(spanTagsRegExp)
+        .filter((item) => {
+          return item ? !item.match(/^\s$/) : false;
+        })
+        .join('')
+        .substr(0, 50)
+        .concat('...');
   }
 
   function formatLink(searchResultData) {
