@@ -192,7 +192,7 @@ body {
 }
 
 .wiki-crawler__return-btn {
-  margin-top: auto;
+  margin-top: 30px;
   transition: opacity 1s, visibility 1s;
 }
 
@@ -246,20 +246,11 @@ body {
     height: auto;
     align-self: flex-start;
   }
-
-  .wiki-crawler__return-btn {
-    margin: 0;
-    position: relative;
-    top: -20px;
-  }
 }
 
 @media screen and (max-width: 480px) {
   :root, body {
     overflow-x: hidden;
-  }
-  .wiki-crawler__return-btn {
-    top: -50px;
   }
   .wiki-crawler__no-results-msg {
     margin-bottom: 50px;

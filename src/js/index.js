@@ -160,10 +160,9 @@ function View() {
       }, 1000)
     });
 
-    p = p.then((el) => {
+    return p.then((el) => {
       el.classList.remove('wiki-crawler__no-results-msg--hidden');
     });
-    return p;
   }
 
   function bindEvents() {
@@ -222,8 +221,11 @@ function Controller() {
         if (query) {
           deps.model.makeWikipediaRequest(query)
             .then((results) => {
-              // ADD ERROR HANDLING FOR NO RESULTS HERE
-              return deps.view.renderSearchResults(results);
+              if(results.length > 0) {
+                return deps.view.renderSearchResults(results);
+              } else {
+                return deps.view.renderError();
+              }
             })
             .then(() => {
               resolve();
