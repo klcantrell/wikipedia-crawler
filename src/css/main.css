@@ -201,6 +201,17 @@ body {
   visibility: hidden;
 }
 
+.wiki-crawler__no-results-msg {
+  width: 60%;
+  text-align: center;
+  transition: opacity 1s, visibility 1s;
+}
+
+.wiki-crawler__no-results-msg--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
 @keyframes spin-fade-out {
   0% {
     transform: rotate(0deg);
@@ -249,5 +260,8 @@ body {
   }
   .wiki-crawler__return-btn {
     top: -50px;
+  }
+  .wiki-crawler__no-results-msg {
+    margin-bottom: 50px;
   }
 }

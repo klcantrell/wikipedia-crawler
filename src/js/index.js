@@ -28,7 +28,7 @@ function View() {
   }
 
   function whenGoBtnClicked() {
-    whenUserInitiatesSearch()
+    whenUserInitiatesSearch();
   }
 
   function whenReturnKeyPressedOnInput(e) {
@@ -38,8 +38,11 @@ function View() {
   }
 
   function whenReturnBtnClicked() {
-    destroySearchResults();
-    dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
+    destroySearchResults()
+      .then(() => {
+        dom.searchControls.classList.remove('wiki-crawler__search-controls--hidden');
+        dom.returnBtn.classList.add('wiki-crawler__return-btn--hidden');
+      });
   }
 
   function whenUserInitiatesSearch() {
@@ -113,13 +116,10 @@ function View() {
   }
 
   function destroySearchResults() {
-    fadeOutSearchResults()
+    return fadeOutSearchResults()
       .then(() => {
         return removeResultEls();
-      })
-      .then(() => {
-        dom.searchControls.classList.remove('wiki-crawler__search-controls--hidden');
-      })
+      });
   }
 
   function fadeOutSearchResults() {
@@ -141,6 +141,31 @@ function View() {
     });
   }
 
+  function renderError() {
+    let p = new Promise((resolve) => {
+      dom.resultsSection.classList.remove('wiki-crawler__results--hidden');
+      const noResultsShell = document.createElement('DIV');
+      noResultsShell.innerHTML = html`
+        <p class="wiki-crawler__no-results-msg wiki-crawler__no-results-msg--hidden">
+          Your search returned no results.
+          <br>
+          <br>
+          Please try another.
+        </p>
+      `;
+      const noResultsEl = noResultsShell.firstElementChild;
+      dom.resultsItems.appendChild(noResultsEl);
+      setTimeout(() => {
+        resolve(noResultsEl);
+      }, 1000)
+    });
+
+    p = p.then((el) => {
+      el.classList.remove('wiki-crawler__no-results-msg--hidden');
+    });
+    return p;
+  }
+
   function bindEvents() {
     dom.enterBtn.addEventListener('click', whenEnterBtnClicked);
     dom.exitBtn.addEventListener('click', whenExitBtnClicked);
@@ -154,7 +179,8 @@ function View() {
       dom.cache();
       bindEvents();
     },
-    renderSearchResults
+    renderSearchResults,
+    renderError
   }
 }
 
@@ -193,13 +219,21 @@ function Controller() {
     executeSearch(userInput) {
       return new Promise((resolve) => {
         let query = formatUserSearch(userInput);
-        deps.model.makeWikipediaRequest(query)
-          .then((results) => {
-            return deps.view.renderSearchResults(results);
-          })
-          .then(() => {
-            resolve();
-          });
+        if (query) {
+          deps.model.makeWikipediaRequest(query)
+            .then((results) => {
+              // ADD ERROR HANDLING FOR NO RESULTS HERE
+              return deps.view.renderSearchResults(results);
+            })
+            .then(() => {
+              resolve();
+            });
+        } else {
+          deps.view.renderError()
+            .then(() => {
+              resolve();
+            })
+        }
       });
     },
     formatSearchResultData(searchResultData) {
