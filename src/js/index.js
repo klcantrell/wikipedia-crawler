@@ -1,3 +1,6 @@
+import axios from 'axios';
+import '../css/main.css';
+
 function View() {
   const dom = {
     rootEl: document.getElementById('wiki-crawler'),
