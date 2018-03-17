@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Comfortaa:700');
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('../fonts/Comfortaa-Bold.ttf') format('truetype');
+}
 
 * {
   box-sizing: border-box;

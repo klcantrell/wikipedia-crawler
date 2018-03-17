@@ -51,7 +51,7 @@ module.exports = {
           options: {
             name: '[name].[ext]',
             outputPath: 'fonts/',
-            // publicPath: 'https://s3.us-east-2.amazonaws.com/kals-wikipedia-crawler/'
+            publicPath: 'https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/fonts'
           }
         }
       }
