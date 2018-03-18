@@ -1,4 +1,9 @@
 @font-face {
+  font-family: 'Poiret One';
+  src: url('../fonts/PoiretOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Comfortaa';
   src: url('../fonts/Comfortaa-Bold.ttf') format('truetype');
 }
@@ -12,7 +17,7 @@
 }
 
 body {
-  font-family: Comfortaa, serif;
+  font-family: 'Poiret One', cursive;
   color: #F7F6F2;
   width: 100vw;
   height: 100vh;
@@ -47,7 +52,8 @@ body {
 }
 
 .wiki-crawler__tip {
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .wiki-crawler__search-bar {
@@ -164,21 +170,29 @@ body {
 .wiki-crawler__result:active {
   background: #F7F6F2;
   color: #393C40;
-  font-size: .3rem;
   border-width: 10px;
   border-style: inset;
 }
 
 .wiki-crawler__result-title {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   margin: 0;
 }
 
+.wiki-crawler__result:active .wiki-crawler__result-title {
+  transform: scale(0.8);
+}
+
 .wiki-crawler__result-snippet {
-  font-family: sans-serif;
+  font-family: Comfortaa, serif;
   font-size: 0.5rem;
   color: #393C40;
   margin: 0;
+  width: 90%;
+}
+
+.wiki-crawler__result:active .wiki-crawler__result-snippet {
+  transform: scale(0.8);
 }
 
 .wiki-crawler__search-in-progress-icon {
@@ -237,7 +251,7 @@ body {
 
 @media screen and (max-width: 800px) {
   :root {
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .wiki-crawler {

@@ -67,7 +67,7 @@ module.exports = {
     //   test: /\.ttf$/,
     //   threshold: 10240,
     //   minRatio: 0.8,
-    //   deleteOriginalAssets: false
+    //   deleteOriginalAssets: true
     // })
   ]
 }
