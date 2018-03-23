@@ -44,12 +44,18 @@ export default function Controller() {
             })
             .then(() => {
               resolve();
+            })
+            .catch(() => {
+              deps.view.renderError('servererror')
+                .then(() => {
+                  resolve();
+                });
             });
         } else {
-          deps.view.renderError()
+          deps.view.renderError('noresults')
             .then(() => {
               resolve();
-            })
+            });
         }
       });
     },

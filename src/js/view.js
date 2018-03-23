@@ -147,16 +147,35 @@ export default function View(controller) {
     });
   }
 
-  function renderError() {
+  function renderError(err) {
+    let errMsg;
+    switch(err) {
+      case 'noresults':
+        errMsg = html`
+            Your search returned no results.
+            <br>
+            <br>
+            Please try another.
+          </p>
+        `;
+        break;
+      case 'servererror':
+        errMsg = html`
+            There was a server error.
+            <br>
+            <br>
+            Please try again.
+          </p>
+        `;
+        break;
+    }
+
     let p = new Promise((resolve) => {
       dom.resultsSection.classList.remove('wiki-crawler__results--hidden');
       const noResultsShell = document.createElement('DIV');
       noResultsShell.innerHTML = html`
         <p class="wiki-crawler__no-results-msg wiki-crawler__no-results-msg--hidden">
-          Your search returned no results.
-          <br>
-          <br>
-          Please try another.
+          ${errMsg}
         </p>
       `;
       const noResultsEl = noResultsShell.firstElementChild;
