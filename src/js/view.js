@@ -53,6 +53,8 @@ export default function View(controller) {
     dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
     renderProgressIcon()
       .then(() => {
+        // IE 11 doesn't support classList on SVG
+        dom.progressIcon.setAttribute('class', 'js_wiki-crawler__search-in-progress-icon');
         return controller.executeSearch(userInput);
       })
       .then(() => {
@@ -110,7 +112,8 @@ export default function View(controller) {
 
   function renderProgressIcon() {
     return new Promise((resolve) => {
-      dom.progressIcon.classList.add('wiki-crawler__search-in-progress-icon--spin-and-fade-out')
+      // IE 11 doesn't support classList on SVG
+      dom.progressIcon.setAttribute('class', 'wiki-crawler__search-in-progress-icon--spin-and-fade-out');
       setTimeout(() => {
         resolve();
       }, 1000)

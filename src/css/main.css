@@ -23,6 +23,7 @@ body {
   height: 100vh;
   margin: 0;
   background: #C76559;
+  overflow-x: hidden;
 }
 
 .wiki-crawler {
@@ -121,6 +122,8 @@ body {
 
 .wiki-crawler__results {
   position: absolute;
+  left: 0;
+  top: 0;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -202,6 +205,10 @@ body {
 .wiki-crawler__search-in-progress-icon {
   position: absolute;
   top: 25%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
   visibility: hidden;
 }
 
