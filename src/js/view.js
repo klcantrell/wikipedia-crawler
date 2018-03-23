@@ -50,6 +50,7 @@ export default function View(controller) {
   function whenUserInitiatesSearch() {
     let userInput = dom.searchBar.value;
     dom.searchBar.value = '';
+    dom.searchBar.blur();
     dom.searchControls.classList.add('wiki-crawler__search-controls--hidden');
     renderProgressIcon()
       .then(() => {
